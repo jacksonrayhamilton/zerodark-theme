@@ -143,7 +143,7 @@
 
 (defun zerodark-modeline-flycheck-status ()
   "Return the status of flycheck to be displayed in the mode-line."
-  (when flycheck-mode
+  (when (and (boundp 'flycheck-mode) flycheck-mode)
     (let* ((text (pcase flycheck-last-status-change
                    (`finished (if flycheck-current-errors
                                   (let ((count (let-alist (flycheck-count-errors flycheck-current-errors)
