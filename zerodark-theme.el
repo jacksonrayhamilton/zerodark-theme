@@ -813,7 +813,6 @@ The result is cached for one second to avoid hiccups."
 (defun zerodark-setup-modeline-format ()
   "Setup the mode-line format for zerodark."
   (interactive)
-  (require 'magit)
   (require 'all-the-icons)
   (setq-default mode-line-format
                 `("%e"
