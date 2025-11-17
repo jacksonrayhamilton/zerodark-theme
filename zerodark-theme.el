@@ -61,7 +61,8 @@
   :type 'boolean)
 
 (defcustom zerodark-theme-display-vc-status 'full
-  "Control how version control information is displayed."
+  "Control how version control information is displayed.
+Note that `magit' must also be installed."
   :type '(choice (const :tag "Display fork symbol and branch name" 'full)
                  (const :tag "Display fork symbol only" t)
                  (const :tag "Do not display any version control information" nil)))
@@ -130,6 +131,7 @@
 (defvar zerodark-buffer-coding '(:eval (unless (eq buffer-file-coding-system (default-value 'buffer-file-coding-system))
                                          mode-line-mule-info)))
 
+;; `magit' must be installed in order to evaluate this.
 (defvar zerodark-modeline-vc '(vc-mode ("   "
                                         (:eval (all-the-icons-faicon "code-fork"
                                                                      :height 0.9
@@ -192,7 +194,8 @@
 
 (defun zerodark-git-face ()
   "Return the face to use based on the current repository status.
-The result is cached for one second to avoid hiccups."
+The result is cached for one second to avoid hiccups.
+`magit' must be installed in order to call this function."
   (funcall zerodark--git-face-cached))
 
 
@@ -825,7 +828,10 @@ The result is cached for one second to avoid hiccups."
                   " "
                   ,zerodark-modeline-buffer-identification
                   ,zerodark-modeline-position
-                  ,(if zerodark-theme-display-vc-status
+                  ;; Check if magit is installed and simultaneously ensure its
+                  ;; functions are loaded:
+                  ,(if (and (require 'magit nil 'noerror)
+                            zerodark-theme-display-vc-status)
                        zerodark-modeline-vc
                      "")
                   "  "
